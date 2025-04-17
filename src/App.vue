@@ -6,9 +6,11 @@
     <button :disabled="newTask.length === 0">Azy ajoute</button>
     </form>
     <ul>
-      <li v-for="task in sortTasks()" :key="task.id" :class="{done: task.isDone}">
+      <li v-for="task in sortTasks" 
+          :key="task.id" 
+          :class="{done: task.isDone}">
         <span>{{ task.title }}</span>
-        <input type="checkbox" v-model="task.isDone" @change="sortTasks()">
+        <input type="checkbox" v-model="task.isDone">
       </li>
     </ul>
   </div>
@@ -17,11 +19,12 @@
     <input type="checkbox" v-model="hideDone">
     Cacher les taches faites
     </label>
+    <p>{{ remainingTasks }} tâche {{ remainingTasks > 1 ? 's' : '' }} à faire</p>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { computed,ref } from 'vue'
 
 const newTask = ref('')
 const tasks = ref([])
@@ -36,18 +39,24 @@ const addTask = () => {
   }
   tasks.value.push(task)
   newTask.value = ''
-  sortTasks()
+
 }
 
-const sortTasks = () => {
-  const sortedTasks = tasks.value.toSorted ((a, b) => a.isDone > b.isDone ? 1 : -1)
+const sortTasks = computed(
+  () => {
+    console.log('Demo')
+  const sortedTasks = tasks.value.toSorted((a, b) => a.isDone > b.isDone ? 1 : -1)
   if (hideDone.value === true) {
     return sortedTasks.filter(t => t.isDone === false)
   }
   return sortedTasks
 }
-  
+)
+// console.log(sortTasks.value)
 
+const remainingTasks = computed(() => {
+  return tasks.value.filter(t => !t.isDone).length
+})
 </script>
 
 <style>
