@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Button><strong>Test </strong>de bouton</Button>
   <p v-if="tasks.length === 0">Il n'y a pas de tache à effectuer</p>
   <form action="" @submit.prevent="addTask">
     <input type="text" v-model="newTask" placeholder="ajouter un truc à faire">
@@ -9,8 +10,9 @@
       <li v-for="task in sortTasks" 
           :key="task.id" 
           :class="{done: task.isDone}">
-        <span>{{ task.title }}</span>
-        <input type="checkbox" v-model="task.isDone">
+        <Checkbox :label="task.title" 
+        @check=" (p) => console.log('coché', p)" 
+        @uncheck=" (p) => console.log('décoché')"/>
       </li>
     </ul>
   </div>
@@ -20,11 +22,14 @@
     Cacher les taches faites
     </label>
     <p>{{ remainingTasks }} tâche {{ remainingTasks > 1 ? 's' : '' }} à faire</p>
+    <Checkbox label="Bonjour"/>
   </div>
 </template>
 
 <script setup>
 import { computed,ref } from 'vue'
+import Checkbox from './Checkbox.vue'
+import Button from './Button.vue'
 
 const newTask = ref('')
 const tasks = ref([])
