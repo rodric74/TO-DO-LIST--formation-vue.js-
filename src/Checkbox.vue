@@ -1,21 +1,14 @@
 <template>
-    <input type="checkbox" @change="onChange">
-    <span>{{label}}</span>
-</template>
-
-<script setup>
-    defineProps({
-        label: String
-    })
-    
-   const emits = defineEmits(['check', 'uncheck'])
-   const onChange = (event) => {
-    if (event.currentTarget.checked) {
-        emits('check', event.currentTarget)
-    } else {
-        emits('uncheck', event.currentTarget)
-    }
-    }
-</script>
-
-<style></style>
+    <label>
+      <input type="checkbox" :checked="modelValue" @change="$emit('update:modelValue', $event.target.checked)">
+      <span>{{ label }}</span>
+    </label>
+  </template>
+  
+  <script setup>
+  defineProps({
+    label: String,
+    modelValue: Boolean
+  })
+  defineEmits(['update:modelValue'])
+  </script>
